@@ -1,0 +1,55 @@
+#include<stdio.h>
+# define N 5
+int stack[N];
+int top=-1;
+void push()
+{
+int x;
+printf("enter the element to be inserted\n");
+scanf("%d",&x);
+if (top==N){
+printf("Stack overflow:");
+}
+else{
+top++;
+stack[top]=x;
+}
+}
+void pop(){
+int item;
+printf("Enter the item to be popped\n");
+scanf("%d",&item);
+if(top==-1){
+printf("Stack underflow");}
+else{
+printf("Element deleted is %d\n",stack[top]);
+top--;
+}
+}
+void display(){
+printf("elements in the stack are:\n");
+for(int i=top;i>=0;i--){
+printf("%d",stack[i]);
+}
+}
+
+void main()
+{
+int choice;
+do{
+printf("enter 1 for push, 2 for pop ,3 for display and 4 for exit\n");
+scanf("%d",&choice);
+switch(choice){
+case 1:push();
+break;
+case 2:pop();
+break;
+case 3:display();
+break;
+case 4:printf("You have exited!\n");
+break;
+}
+}while(choice!=4);
+
+
+}
