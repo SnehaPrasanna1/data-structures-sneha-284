@@ -1,0 +1,17 @@
+void displayLinkedList(struct Node* head) {
+    struct Node* temp = head;
+
+    if (temp == NULL) {
+        printf("Linked list is empty.\n");
+        return;
+    }
+
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+output:
+Linked List after deletion at a specific position: Linked list is empty.
