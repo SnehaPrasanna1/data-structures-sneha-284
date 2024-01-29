@@ -1,0 +1,128 @@
+Write a program to Implement Single Link List to simulate Stack &  Queue Operations.-
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Linked list structure
+struct LinkedList {
+    struct Node* head;
+};
+
+// Initialize an empty linked list
+void initialize(struct LinkedList* list) {
+    list->head = NULL;
+}
+
+// Push operation for stack
+void push(struct LinkedList* list, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = list->head;
+    list->head = new_node;
+}
+
+// Pop operation for stack
+int pop(struct LinkedList* list) {
+    if (list->head == NULL) {
+        printf("Stack is empty\n");
+        return -1; // indicating an error
+    }
+
+    int popped_data = list->head->data;
+    struct Node* temp = list->head;
+    list->head = list->head->next;
+    free(temp);
+
+    return popped_data;
+}
+
+// Enqueue operation for queue
+void enqueue(struct LinkedList* list, int data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    if (list->head == NULL) {
+        list->head = new_node;
+        return;
+    }
+
+    struct Node* current = list->head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    current->next = new_node;
+}
+
+// Dequeue operation for queue
+int dequeue(struct LinkedList* list) {
+    if (list->head == NULL) {
+        printf("Queue is empty\n");
+        return -1; // indicating an error
+    }
+
+    int dequeued_data = list->head->data;
+    struct Node* temp = list->head;
+    list->head = list->head->next;
+    free(temp);
+
+    return dequeued_data;
+}
+
+// Display the elements of the linked list
+void display(struct LinkedList* list) {
+    struct Node* current = list->head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct LinkedList linkedList;
+    initialize(&linkedList);
+
+    // Stack operations
+    push(&linkedList, 1);
+    push(&linkedList, 2);
+    push(&linkedList, 3);
+
+    printf("Stack: ");
+    display(&linkedList);
+
+    printf("Popped: %d\n", pop(&linkedList));
+
+    printf("Stack after pop: ");
+    display(&linkedList);
+
+    // Queue operations
+    enqueue(&linkedList, 4);
+    enqueue(&linkedList, 5);
+    enqueue(&linkedList, 6);
+
+    printf("\nQueue: ");
+    display(&linkedList);
+
+    printf("Dequeued: %d\n", dequeue(&linkedList));
+
+    printf("Queue after dequeue: ");
+    display(&linkedList);
+
+    return 0;
+}
+Output:
+
+Stack: 3 2 1 
+Popped: 3
+Stack after pop: 2 1 
+
+Queue: 2 1 4 5 6 
+Dequeued: 2
+Queue after dequeue: 1 4 5 6 
