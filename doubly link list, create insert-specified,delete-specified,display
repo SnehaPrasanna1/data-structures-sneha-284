@@ -1,0 +1,153 @@
+2.   8)WAP to Implement doubly link list with primitive operations                   
+I.Create a doubly linked list.                   
+II. Insert a new node to the left of the node.                   
+III. Delete the node based on a specific value                    
+IV. Display the contents of the list
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node {
+    struct node* next;
+    struct node* prev;
+    int data;
+};
+
+void beg_insert(struct node** head, int item) {
+    struct node* ptr = (struct node*)malloc(sizeof(struct node));
+    struct node* temp;
+    if (ptr == NULL) {
+        printf("\nOverflow");
+    } else {
+        ptr->data = item;
+        if (*head == NULL) {
+            *head = ptr;
+            ptr->next = *head;
+        } else {
+            temp = *head;
+            while (temp->next != *head)
+                temp = temp->next;
+            ptr->next = *head;
+            temp->next = ptr;
+            *head = ptr;
+        }
+        printf("\nNode inserted\n");
+    }
+}
+
+void delete_specified(struct node** head, int position) {
+    struct node* temp, * prev;
+    int val;
+    printf("Enter the value to delete: ");
+    scanf("%d", &val);
+
+    temp = *head;
+    prev = NULL;
+
+    // Search for the node with the specified value
+    while (temp != NULL && temp->data != val) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("\nNode not found\n");
+        return;
+    }
+
+    if (prev == NULL) {
+        // Deleting the first node
+        *head = temp->next;
+        if (*head != NULL)
+            (*head)->prev = NULL;
+    } else {
+        // Deleting a node other than the first one
+        prev->next = temp->next;
+        if (temp->next != NULL)
+            temp->next->prev = prev;
+    }
+
+    free(temp);
+    printf("Node Deleted\n");
+}
+
+void insert_specified(struct node** head, int item) {
+    struct node* ptr = (struct node*)malloc(sizeof(struct node));
+    struct node* temp;
+    int i, loc;
+    printf("\n Enter the location\n");
+    scanf("%d", &loc);
+    temp = *head;
+    for (i = 0; i < loc; i++) {
+        temp = temp->next;
+        if (temp == NULL) {
+            printf("\ncan't insert\n");
+            return;
+        }
+    }
+    ptr->data = item;
+    ptr->next = temp->next;
+    ptr->prev = temp;
+    temp->next = ptr;
+    if (ptr->next != NULL)
+        ptr->next->prev = ptr;
+    printf("Node inserted\n");
+}
+
+void display(struct node* head) {
+    struct node* ptr;
+    ptr = head;
+    if (head == NULL) {
+        printf("\n nothing to print");
+    } else {
+        printf("\n printing values...\n");
+        while (ptr->next != head) {
+            printf("%d\n", ptr->data);
+            ptr = ptr->next;
+        }
+        printf("%d\n", ptr->data);
+    }
+}
+
+int main() {
+    struct node* head = NULL;
+    beg_insert(&head, 10);
+    beg_insert(&head, 20);
+    beg_insert(&head, 30);
+    printf("Doubly Linked list after insertion at the beginning: ");
+    display(head);
+    insert_specified(&head, 25);
+    insert_specified(&head, 35);
+    printf("Doubly Linked list after insertions at specific position: ");
+    display(head);
+    delete_specified(&head, 1);
+    printf("Doubly linked list after deletion at the specified position: ");
+    display(head);
+
+    return 0;
+}
+Output
+Node inserted 
+Node inserted
+Doubly Linked List after insertion at the beginning:
+printing values ...
+30
+20
+10
+Enter the location
+1
+Node inserted
+Doubly Linked List after insertions at specific position:
+printing values ...
+30
+20
+35
+25
+10
+Enter the value to delete:20
+Node Deleted
+Doubly Linked List after deletion at the specified position
+printing values ...
+30
+35
+25
+10
