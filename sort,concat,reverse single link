@@ -1,0 +1,143 @@
+1.   6a) WAP to Implement Single Link List with following operations: Sort the linked list, Reverse the linked
+list, Concatenation of two linked lists.
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    newNode->data = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to insert a node at the beginning of the linked list
+void insertAtBeginning(struct Node** head, int value) {
+    struct Node* newNode = createNode(value);
+    newNode->next = *head;
+    *head = newNode;
+}
+
+// Function to display the linked list
+void displayList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+
+// Function to reverse the linked list
+struct Node* reverseList(struct Node* head) {
+    struct Node* prev = NULL;
+    struct Node* current = head;
+    struct Node* next = NULL;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    return prev; // new head after reversal
+}
+
+// Function to sort the linked list in ascending order
+void sortList(struct Node** head) {
+    if (*head == NULL || (*head)->next == NULL) {
+        // List is empty or has only one element, no need to sort
+        return;
+    }
+
+    struct Node* current = *head;
+    struct Node* index = NULL;
+    int temp;
+
+    while (current != NULL) {
+        index = current->next;
+
+        while (index != NULL) {
+            if (current->data > index->data) {
+                // Swap data if the current element is greater than the index element
+                temp = current->data;
+                current->data = index->data;
+                index->data = temp;
+            }
+
+            index = index->next;
+        }
+
+        current = current->next;
+    }
+}
+
+// Function to concatenate two linked lists
+void concatenateLists(struct Node** list1, struct Node* list2) {
+    if (*list1 == NULL) {
+        // If the first list is empty, just point it to the second list
+        *list1 = list2;
+    } else {
+        // Traverse the first list to find the last node
+        struct Node* temp = *list1;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+
+        // Concatenate the second list to the end of the first list
+        temp->next = list2;
+    }
+}
+
+int main() {
+    struct Node* list1 = NULL;
+    struct Node* list2 = NULL;
+
+    // Insert elements into the first list
+    insertAtBeginning(&list1, 30);
+    insertAtBeginning(&list1, 10);
+    insertAtBeginning(&list1, 50);
+
+    printf("Original List 1: ");
+    displayList(list1);
+
+    // Sort the first list
+    sortList(&list1);
+    printf("Sorted List 1: ");
+    displayList(list1);
+
+    // Reverse the first list
+    list1 = reverseList(list1);
+    printf("Reversed List 1: ");
+    displayList(list1);
+
+    // Insert elements into the second list
+    insertAtBeginning(&list2, 20);
+    insertAtBeginning(&list2, 40);
+
+    printf("Original List 2: ");
+    displayList(list2);
+
+    // Concatenate the first and second lists
+    concatenateLists(&list1, list2);
+    printf("Concatenated List: ");
+    displayList(list1);
+
+    return 0;
+}
+Output
+Original List 1:50->10->30->NULL
+Sorted List 1: 10->30->50->NULL
+Reversed List 1:50->30->10->NULL
+Original List2: 40->20->NULL
+Concatenated list : 50->30->10->40->20->NULL
